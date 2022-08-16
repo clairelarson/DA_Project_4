@@ -90,8 +90,9 @@ def inventory_add_csv():
                     product_price=product_price,
                     product_quantity=product_quantity,
                     date_updated=date_updated, brand_name=brand_name, brand_id=brand_id)
-                session.add(new_product)
-        session.commit() 
+                print(date_updated)
+                #session.add(new_product)
+        #session.commit() 
                 
         
 def brand_add_csv():
@@ -146,21 +147,22 @@ def backup_csv():
 #Clean Data
 def clean_date(row):
     try:
-        split_date = row.split('/')
-        year = int(split_date[2])
-        month = int(split_date[0])
-        day = int(split_date[1])
-        return_date = datetime.datetime(year, month, day)
-        return_date = return_date.date()
-    except IndexError:
+        date = datetime.datetime(row, "%m/%d/%Y")
+        return date.strftime("%Y-%d-%m")
+        # split_date = row.split('/')
+        # year = int(split_date[2])
+        # month = int(split_date[0])
+        # day = int(split_date[1])
+        # return_date = datetime.datetime(year, month, day)
+    except ValueError:
         input('''
           \n****** Date Error ******
           \rThe date format should be formatted MM/DD/YYY
           \rPress Enter to Try Again
           \r***************************\n''')
         return
-    else:
-        return return_date
+    # else:
+    #     return return_date
         
 def clean_price(row):
     try:
@@ -333,4 +335,4 @@ if __name__ == "__main__":
     
     brand_add_csv()
     inventory_add_csv()
-    app()
+    #app()
