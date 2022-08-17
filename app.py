@@ -53,7 +53,7 @@ def edit_check(column_name, current_value):
             changes = changes.lower()
             if column_name == 'Date Updated':
                 changes = clean_date(changes)
-                if type(changes) == datetime.date:
+                if type(changes) == datetime.datetime:
                     return changes
             elif column_name == 'Product Price':
                 changes = clean_price(changes)
@@ -90,9 +90,8 @@ def inventory_add_csv():
                     product_price=product_price,
                     product_quantity=product_quantity,
                     date_updated=date_updated, brand_name=brand_name, brand_id=brand_id)
-                print(date_updated)
-                #session.add(new_product)
-        #session.commit() 
+                session.add(new_product)
+        session.commit() 
                 
         
 def brand_add_csv():
@@ -147,22 +146,16 @@ def backup_csv():
 #Clean Data
 def clean_date(row):
     try:
-        date = datetime.datetime(row, "%m/%d/%Y")
-        return date.strftime("%Y-%d-%m")
-        # split_date = row.split('/')
-        # year = int(split_date[2])
-        # month = int(split_date[0])
-        # day = int(split_date[1])
-        # return_date = datetime.datetime(year, month, day)
+        return_date = datetime.datetime.strptime(row, "%m/%d/%Y")
     except ValueError:
         input('''
           \n****** Date Error ******
-          \rThe date format should be formatted MM/DD/YYY
+          \rThe date format should be formatted MM/DD/YYYY
           \rPress Enter to Try Again
           \r***************************\n''')
         return
-    # else:
-    #     return return_date
+    else:
+        return return_date
         
 def clean_price(row):
     try:
@@ -270,7 +263,7 @@ def app():
             while date_error:
                 date = input("Date Updated (MM/DD/YYYY): ")
                 date_updated = clean_date(date)
-                if type(date_updated) == datetime.date:
+                if type(date_updated) == datetime.datetime:
                     date_error = False
             while price_error:
                 product_price = input("Price (Ex: 25.64) : ")
@@ -335,4 +328,4 @@ if __name__ == "__main__":
     
     brand_add_csv()
     inventory_add_csv()
-    #app()
+    app()
