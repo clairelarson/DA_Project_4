@@ -1,5 +1,4 @@
 #imports
-
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -28,4 +27,3 @@ class Product(Base):
     date_updated = Column("Date Updated", DateTime)
     brand_name = Column("Brand Name", String)
     brand_id = Column(Integer, ForeignKey(Brand.brand_id))
-
