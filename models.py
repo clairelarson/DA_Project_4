@@ -25,7 +25,7 @@ class Product(Base):
     product_name = Column("Product Name", String)
     product_quantity = Column("Product Quantity", Integer)
     product_price = Column("Product Price", Integer)
-    date_updated = Column("Date Updated", Date)
+    date_updated = Column("Date Updated", DateTime)
     brand_name = Column("Brand Name", String)
     brand_id = Column(Integer, ForeignKey(Brand.brand_id))
 
