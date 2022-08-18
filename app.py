@@ -252,6 +252,7 @@ def app():
         # Adding a new product to the database
         elif user_input == 'N':
             product_name = input("Product Name: ")
+            product_in_db = session.query(Product).filter(Product.product_name==product_name).one_or_none()
             price_error = True
             quant_error = True
             while quant_error:
@@ -276,7 +277,6 @@ def app():
                     product_quantity=product_quantity,
                     date_updated=date_updated,
                     brand_name=brand_name)
-            product_in_db = session.query(Product).filter(Product.product_name==new_product.product_name).first()
             if product_in_db == None:
                 session.add(new_product)
                 session.commit()
@@ -284,6 +284,7 @@ def app():
                 time.sleep(1.5)
             else:
                 if product_in_db.date_updated < new_product.date_updated:
+                    product_in_db.product_name=new_product.product_name,
                     product_in_db.product_price=new_product.product_price,
                     product_in_db.product_quantity=new_product.product_quantity,
                     product_in_db.date_updated=new_product.date_updated,
