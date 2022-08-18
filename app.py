@@ -1,7 +1,7 @@
 #imports
 from models import (Base, session, Brand, Product, engine)
 import csv
-import datetime
+from datetime import datetime
 import time
 
 # main menu - add, search, analysis, view, exit
@@ -53,7 +53,7 @@ def edit_check(column_name, current_value):
             changes = changes.lower()
             if column_name == 'Date Updated':
                 changes = clean_date(changes)
-                if type(changes) == datetime.datetime:
+                if type(changes) == datetime:
                     return changes
             elif column_name == 'Product Price':
                 changes = clean_price(changes)
@@ -146,7 +146,7 @@ def backup_csv():
 #Clean Data
 def clean_date(row):
     try:
-        return_date = datetime.datetime.strptime(row, "%m/%d/%Y")
+        return_date = datetime.strptime(row, "%m/%d/%Y")
     except ValueError:
         input('''
           \n****** Date Error ******
@@ -263,7 +263,7 @@ def app():
             while date_error:
                 date = input("Date Updated (MM/DD/YYYY): ")
                 date_updated = clean_date(date)
-                if type(date_updated) == datetime.datetime:
+                if type(date_updated) == datetime:
                     date_error = False
             while price_error:
                 product_price = input("Price (Ex: 25.64) : ")
@@ -276,7 +276,7 @@ def app():
                     product_quantity=product_quantity,
                     date_updated=date_updated,
                     brand_name=brand_name)
-            product_in_db = session.query(Product).filter(Product.product_name==new_product.product_name).one_or_none()
+            product_in_db = session.query(Product).filter(Product.product_name==new_product.product_name).first()
             if product_in_db == None:
                 session.add(new_product)
                 session.commit()
@@ -284,7 +284,6 @@ def app():
                 time.sleep(1.5)
             else:
                 if product_in_db.date_updated < new_product.date_updated:
-                    product_in_db.product_name=new_product.product_name,
                     product_in_db.product_price=new_product.product_price,
                     product_in_db.product_quantity=new_product.product_quantity,
                     product_in_db.date_updated=new_product.date_updated,
@@ -292,7 +291,7 @@ def app():
                     session.commit()
                     print("\nProduct was updated successfully!\n")
                     time.sleep(1.5)
-        # Analyzing the Database
+        #Analyzing the Database
         elif user_input == 'A':
             exsp_product = session.query(Product).order_by(Product.product_price.desc()).first()
             cheap_product = session.query(Product).order_by(Product.product_price).first()
