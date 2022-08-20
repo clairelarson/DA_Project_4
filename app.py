@@ -284,10 +284,10 @@ def app():
                 time.sleep(1.5)
             else:
                 if product_in_db.date_updated < new_product.date_updated:
-                    product_in_db.product_name=new_product.product_name,
-                    product_in_db.product_price=new_product.product_price,
-                    product_in_db.product_quantity=new_product.product_quantity,
-                    product_in_db.date_updated=new_product.date_updated,
+                    product_in_db.product_name=new_product.product_name
+                    product_in_db.product_price=new_product.product_price
+                    product_in_db.product_quantity=new_product.product_quantity
+                    product_in_db.date_updated=new_product.date_updated
                     product_in_db.brand_name=new_product.brand_name
                     session.commit()
                     print("\nProduct was updated successfully!\n")
